@@ -1,0 +1,210 @@
+#include <iostream>
+#include <cmath>
+#include <vector>
+#include <array>
+#include <iomanip>
+#include <cassert>
+#include <sstream>
+#include <cctype>
+
+using namespace std;
+
+char shiftChar(char letter, int shift_value)
+{
+    char new_letter;
+    int temp, temp2, t_shift_value;
+
+    if(letter >= 65 && letter <= 90)
+    {
+        if(shift_value > 26)
+        {
+            do
+            {
+                temp = shift_value - 26;
+                t_shift_value = temp;
+                shift_value = t_shift_value;
+            } while (shift_value > 26);
+            if(letter + shift_value > 90)
+            {
+                temp2 = 90 - letter;
+                letter = 64;
+                t_shift_value = shift_value - temp2;
+                new_letter = letter + t_shift_value;
+            }
+            else
+            {
+                new_letter = letter + shift_value;
+            }
+        }
+        else if(shift_value < -26)
+        {
+            do
+            {
+                temp = shift_value + 26;
+                t_shift_value = temp;
+                shift_value = t_shift_value;
+            } while (shift_value < -26);
+            if(letter + shift_value < 65)
+            {
+                temp2 = letter - 65;
+                letter = 91;
+                t_shift_value = shift_value + temp2;
+                new_letter = letter + t_shift_value;
+            }
+            else
+            {
+                new_letter = letter + shift_value;
+            }
+        }
+        else
+        {
+            if(letter + shift_value > 90)
+            {
+                temp2 = 90 - letter;
+                letter = 64;
+                t_shift_value = shift_value - temp2;
+                new_letter = letter + t_shift_value;
+            }
+            else if(letter + shift_value < 65)
+            {
+                temp2 = letter - 65;
+                letter = 91;
+                t_shift_value = shift_value + temp2;
+                new_letter = letter + t_shift_value;
+            }
+            else
+            {
+                new_letter = letter + shift_value;
+            }
+        }
+        return new_letter;
+    }
+    else if(letter >= 97 && letter <= 122)
+    {
+        if(shift_value > 26)
+        {
+            do
+            {
+                temp = shift_value - 26;
+                t_shift_value = temp;
+                shift_value = t_shift_value;
+            } while (shift_value > 26);
+            if(letter + shift_value > 122)
+            {
+                temp2 = 122 - letter;
+                letter = 96;
+                t_shift_value = shift_value - temp2;
+                new_letter = letter + t_shift_value;
+            }
+            else
+            {
+                new_letter = letter + shift_value;
+            }
+        }
+        else if(shift_value < -26)
+        {
+            do
+            {
+                temp = shift_value + 26;
+                t_shift_value = temp;
+                shift_value = t_shift_value;
+            } while (shift_value < -26);
+            if(letter + shift_value < 97)
+            {
+                temp2 = letter - 97;
+                letter = 123;
+                t_shift_value = shift_value + temp2;
+                new_letter = letter + t_shift_value;
+            }
+            else
+            {
+                new_letter = letter + shift_value;
+            }
+        }
+        else
+        {
+            if(letter + shift_value > 122)
+            {
+                temp2 = 122 - letter;
+                letter = 96;
+                t_shift_value = shift_value - temp2;
+                new_letter = letter + t_shift_value;
+            }
+            else if(letter + shift_value < 97)
+            {
+                temp2 = letter - 97;
+                letter = 123;
+                t_shift_value = shift_value + temp2;
+                new_letter = letter + t_shift_value;
+            }
+            else
+            {
+                new_letter = letter + shift_value;
+            }
+        }
+        return new_letter;
+    }
+    else
+    {
+        return letter;
+    }
+}
+
+string getLayer2MessageEncryption(string message, string key_phrase)
+{
+    string keyword;
+    int pos_count = 1;
+    int key_shift;
+
+    if(message == "")
+    {
+        return "";
+    }
+    else if(key_phrase == "")
+    {
+        return message;
+    }
+    else
+    {
+        keyword[0] == key_phrase[0];
+
+        for(int i = 0; i < key_phrase.length(); i++)
+        {
+            if(key_phrase[i] == 32)
+            {
+                if(key_phrase[i + 1] >= 97 && key_phrase[i + 1] <= 122)
+                {
+                    keyword[pos_count] = toupper(key_phrase[i + 1]);
+                    pos_count += 1;
+                }
+                else
+                {
+                keyword[pos_count] = key_phrase[i + 1];
+                pos_count += 1;
+                }
+            }
+            else
+            {
+                continue;
+            }
+        }
+        
+        for(int i = 0; i < keyword.length(); i++)
+        {
+            if(keyword[i] < 65 || keyword[i] > 90)
+            {
+                return message;
+            }
+            else
+            {
+                keyword[i] -= 65; 
+            }
+        }
+
+        for(int i = 0; i < message.length(); i++)
+        {
+            message[i] = shiftChar(i, keyword[i]);
+        }
+        return message;
+    }
+}
